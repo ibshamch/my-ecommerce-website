@@ -1,12 +1,21 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import getProductDetails from "../getProductDetails";
-
+import { useContext } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import CartContext from "./CartContext";
+import { useNavigate } from "react-router-dom";
 const Details = () => {
   const params = useParams();
   const id = params.id;
   const results = useQuery(["productDetails", id], getProductDetails);
-  console.log(results);
+  const navigate = useNavigate();
+  const [cart, setCart] = useContext(CartContext);
+  const addToCart = () => {
+    setCart([...cart, results.data]);
+    navigate("/cart");
+  };
   if (results.isLoading) {
     return <div className="text-8xl">...Loading</div>;
   }
@@ -32,9 +41,13 @@ const Details = () => {
           <button className="bg-orange-400 py-3 px-4 rounded-2xl ">
             Buy Now
           </button>
-          <button className="bg-green-400 py-3 px-4 rounded-2xl ">
+          <Link
+            to={"/cart"}
+            onClick={addToCart}
+            className="bg-green-400 py-3 px-4 rounded-2xl "
+          >
             Add To Cart
-          </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -6,8 +6,6 @@ const Body = () => {
   const results = useGetAllProducts();
   const [input, setInput] = useState("");
 
-  console.log(results);
-  // Filter products based on input
   const filteredResults = results.filter((product) =>
     product.title.toLowerCase().includes(input.toLowerCase())
   );
